@@ -1,0 +1,223 @@
+[
+	{
+		"title": "NT1_1",
+		"blocks": 6,
+		"racks": 6,
+		"rackLength": 20,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+	{
+		"title": "NT1_2",
+		"blocks": 6,
+		"racks": 6,
+		"rackLength": 20,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+	{
+		"title": "NT2_1",
+		"blocks": 6,
+		"racks": 6,
+		"rackLength": 40,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+	{
+		"title": "NT2_2",
+		"blocks": 6,
+		"racks": 6,
+		"rackLength": 40,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+
+	{
+		"title": "NT3_1",
+		"blocks": 4,
+		"racks": 9,
+		"rackLength": 20,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+	{
+		"title": "NT3_2",
+		"blocks": 4,
+		"racks": 9,
+		"rackLength": 20,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+	{
+		"title": "NT4_1",
+		"blocks": 3,
+		"racks": 6,
+		"rackLength": 40,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+	{
+		"title": "NT4_2",
+		"blocks": 3,
+		"racks": 6,
+		"rackLength": 40,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+
+	{
+		"title": "NT5_1",
+		"blocks": 9,
+		"racks": 4,
+		"rackLength": 20,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+	{
+		"title": "NT5_2",
+		"blocks": 9,
+		"racks": 4,
+		"rackLength": 20,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+	{
+		"title": "NT6_1",
+		"blocks": 6,
+		"racks": 3,
+		"rackLength": 40,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+	{
+		"title": "NT6_2",
+		"blocks": 6,
+		"racks": 3,
+		"rackLength": 40,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.02
+	},
+
+	{
+		"title": "NT1_1",
+		"blocks": 6,
+		"racks": 6,
+		"rackLength": 20,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+	{
+		"title": "NT1_2",
+		"blocks": 6,
+		"racks": 6,
+		"rackLength": 20,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+	{
+		"title": "NT2_1",
+		"blocks": 6,
+		"racks": 6,
+		"rackLength": 40,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+	{
+		"title": "NT2_2",
+		"blocks": 6,
+		"racks": 6,
+		"rackLength": 40,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+
+	{
+		"title": "NT3_1",
+		"blocks": 4,
+		"racks": 9,
+		"rackLength": 20,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+	{
+		"title": "NT3_2",
+		"blocks": 4,
+		"racks": 9,
+		"rackLength": 20,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+	{
+		"title": "NT4_1",
+		"blocks": 3,
+		"racks": 6,
+		"rackLength": 40,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+	{
+		"title": "NT4_2",
+		"blocks": 3,
+		"racks": 6,
+		"rackLength": 40,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+
+	{
+		"title": "NT5_1",
+		"blocks": 9,
+		"racks": 4,
+		"rackLength": 20,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+	{
+		"title": "NT5_2",
+		"blocks": 9,
+		"racks": 4,
+		"rackLength": 20,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+	{
+		"title": "NT6_1",
+		"blocks": 6,
+		"racks": 3,
+		"rackLength": 40,
+		"crossAisleW": 2,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	},
+	{
+		"title": "NT6_2",
+		"blocks": 6,
+		"racks": 3,
+		"rackLength": 40,
+		"crossAisleW": 4,
+		"aisleW": 2,
+		"pickListPercent": 0.04
+	}
+]

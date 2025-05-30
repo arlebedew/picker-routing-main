@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Noliktavas Navigācija</title>
+	<link rel="stylesheet" type="text/css" href="style/main.css">
+</head>
+
+<body>
+	<div id="main-container">
+		<div id="pick-item-data">
+			<div class="pick-item-info" id="pick-item-title">
+			</div>
+			<div class="pick-item-info" id="pick-item-block">
+			</div>
+			<div class="pick-item-info" id="pick-item-position">
+			</div>
+			<div class="pick-item-info" id="pick-item-name">
+			</div>
+			<div class="pick-item-info" id="pick-item-sku">
+			</div>
+			<div class="pick-item-info" id="pick-item-amount">
+			</div>
+		</div>
+		<div id="center">
+			<div id="warehouse-map">
+				<div id="top-pick-list-toggle" class="trans-delay" onclick="togglePickOrderListMap(this)">
+					<div id="open-pick-list"></div>
+				</div>
+				<div id="warehouse-map-container">
+					<canvas id="warehouse-map-canvas">
+					</canvas>
+				</div>
+			</div>
+			<div id="pick-list-container" class="hidden-container">
+				<div id="pick-list-sub-container" class="hidden">
+					<div id="pick-list">
+					</div>
+				</div>
+				<div id="bottom-pick-list-toggle" class="hidden" onclick="togglePickOrderListMap(this)">
+					<div id="close-pick-list"></div>
+				</div>
+			</div>
+		</div>
+		<div id="menu">
+			<div id="menu-set-location-text">
+			</div>
+			<div id="menu-actions">
+				<button class="menu-button">
+					BT
+				</button>
+				<button class="menu-button">
+					BT
+				</button>
+				<button class="menu-button">
+					BT
+				</button>
+				<button class="menu-button">
+					BT
+				</button>
+				<button class="menu-button">
+					BT
+				</button>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+<script src="js/globalUIControl.js"></script>
+<script type="text/javascript" src="js/modules/warehouseModel.js"></script>
+<script type="text/javascript" src="js/modules/RouteCalculate.js"></script>
+<script type="text/javascript" src="js/modules/RouteDisplay.js"></script>
+<script type="text/javascript" src="js/wmsImitation/pickListGenerator.js"></script>
+<script>
+/*
+	Fails ar testiem.
+	Svarigie aspekti:
+
+		- perfomance API pielietošana,
+		- rezultātu CSV failu izsniegšana,
+		- dāžadu noliktavas modeļu testi(katram modelim - 10 testi
+		pie vienāda kriterija, tiek apreķināta vidēja vertība),
+		- testiem pielietoti dažadi A* parametri.
+*/
+
+// Test script. Requires HTTPS local'hosting(fetch()) and some time to calculate
+
+	function runWarehouseTests(warehouses) {
+		let testos = 10,
+			allowDiagonalsOptions = [true, false],
+			results = [];
+
+		for (let wh of warehouses) {
+
+			for (let allowDiag of allowDiagonalsOptions) {
+
+				let astarLengths = [],
+					tspTimes = [],
+					astarTimes = [],
+					actualPickListSize = 0;
+
+				for (let t = 0; t < testos; t++) {
+
+					let warehouse = new WarehouseModel();
+
+					warehouse.alignment = 1;
+					warehouse.rackW = 2;
+					warehouse.rackL = wh.rackLength;
+					warehouse.blockAmnt = wh.blocks;
+					warehouse.rackAmntPerBlock = wh.racks;
+					warehouse.crossAisleW = wh.crossAisleW;
+					warehouse.aisleW = wh.aisleW;
+					warehouse.depoWidth = 3;
+					warehouse.depoPos = 'top';
+					warehouse.buildStructArr();
+
+					let pickListGen = new PickListGenerator(),
+						storageCount = warehouse.storageArr.length,
+						pickListSize = Math.floor(storageCount * wh.pickListPercent);
+
+					pickListGen.minListSize = pickListSize;
+					pickListGen.maxListSize = pickListSize;
+					pickListGen.warehouse = warehouse;
+					pickListGen.generatePickList();
+
+					actualPickListSize = pickListGen.pickList.length;
+
+					let routeCal = new RouteCalculate();
+					routeCal.warehouse = warehouse;
+					routeCal.pickListGen = pickListGen;
+					routeCal.allowDiagonals = allowDiag;
+					routeCal.diagonalCostToggle = true;
+					routeCal.optimizeSorting = true;
+					routeCal.enableDotTiebreaker = false;
+					routeCal.precomputePaths = false;
+
+					let tspStart = `tspStart_${wh.title}_${allowDiag}_${t}`,
+						tspEnd = `tspEnd_${wh.title}_${allowDiag}_${t}`;
+
+					performance.mark(tspStart);
+					routeCal.nearestNeighbor();
+					performance.mark(tspEnd);
+					performance.measure(`TSP_${wh.title}_${allowDiag}_${t}`, tspStart, tspEnd);
+
+					let tspDuration = performance
+					.getEntriesByName(`TSP_${wh.title}_${allowDiag}_${t}`)
+					.pop().duration;
+					tspTimes
+					.push(tspDuration);
+
+					let astarStart = `astarStart_${wh.title}_${allowDiag}_${t}`,
+						astarEnd = `astarEnd_${wh.title}_${allowDiag}_${t}`;
+					performance.mark(astarStart);
+					routeCal.calculateAStarPaths();
+					performance.mark(astarEnd);
+					performance.measure(`AStar_${wh.title}_${allowDiag}_${t}`, astarStart, astarEnd);
+					let astarDuration = performance
+					.getEntriesByName(`AStar_${wh.title}_${allowDiag}_${t}`)
+					.pop().duration;
+					astarTimes.push(astarDuration);
+
+					astarLengths.push(routeCal.astarTotalLength);
+
+					performance.clearMarks(tspStart);
+					performance.clearMarks(tspEnd);
+					performance.clearMeasures(`TSP_${wh.title}_${allowDiag}_${t}`);
+					performance.clearMarks(astarStart);
+					performance.clearMarks(astarEnd);
+					performance.clearMeasures(`AStar_${wh.title}_${allowDiag}_${t}`);
+				}
+
+				let avgAStar = astarLengths.reduce((a, b) => a + b, 0) / astarLengths.length,
+					stdDevAStar = Math.sqrt(
+						astarLengths.reduce(
+								(a, b) => a + Math.pow(b - avgAStar, 2), 0
+							) / astarLengths.length
+						),
+					avgTSPTime = tspTimes.reduce((a, b) => a + b, 0) / tspTimes.length,
+					avgAStarTime = astarTimes.reduce((a, b) => a + b, 0) / astarTimes.length;
+
+				results.push(
+				{
+					warehouse: wh.title,
+					blocks: wh.blocks,
+					racks: wh.racks,
+					rackLength: wh.rackLength,
+					crossAisleW: wh.crossAisleW,
+					aisleW: wh.aisleW,
+					pickListPercent: wh.pickListPercent,
+					pickListSize: actualPickListSize, 
+					allowDiagonals: allowDiag,
+					avgAStarLength: avgAStar,
+					stdDevAStar: stdDevAStar,
+					avgTSPTime: avgTSPTime,
+					avgAStarTime: avgAStarTime,
+					allAStarLengths: astarLengths,
+					allTSPTimes: tspTimes,
+					allAStarTimes: astarTimes
+				}
+				);
+			}
+		}
+
+		
+		console.table(
+			results.map(
+				r => (
+					{
+						warehouse: r.warehouse,
+						blocks: r.blocks,
+						racks: r.racks,
+						rackLength: r.rackLength,
+						crossAisleW: r.crossAisleW,
+						aisleW: r.aisleW,
+						pickListPercent: r.pickListPercent,
+						pickListSize: r.pickListSize, 
+						allowDiagonals: r.allowDiagonals,
+						avgAStarLength: r.avgAStarLength.toFixed(2),
+						stdDevAStar: r.stdDevAStar.toFixed(2),
+						avgTSPTime: r.avgTSPTime.toFixed(2), 
+						avgAStarTime: r.avgAStarTime.toFixed(2)
+					}
+				)
+			)
+		);
+
+		return results;
+	}
+
+	function exportResultsToCSV(results) {
+
+		if (!results.length) {
+			console.error('No results!!!');
+			return;
+		}
+
+		if (!window.confirm('Vajag CSV?')) {
+			alert('Sapratu, tad atver konsoli(F12).');
+			return;
+		}
+
+		let columns = [
+			"warehouse",
+			"blocks",
+			"racks",
+			"rackLength",
+			"crossAisleW",
+			"aisleW",
+			"pickListPercent",
+			"pickListSize",
+			"allowDiagonals",
+			"avgAStarLength",
+			"stdDevAStar",
+			"avgTSPTime",
+			"avgAStarTime"
+		];
+
+		let header = columns.join(",") + "\n",
+			rows = results.map(r => columns.map(col => r[col]).join(",")),
+			csvContent = header + rows.join("\n"),
+			blob = new Blob([csvContent], { type: "text/csv" }),
+			url = URL.createObjectURL(blob),
+			a = document.createElement("a");
+
+		a.href = url;
+		a.download = "warehouse_test_results.csv";
+		a.style.display = "none";
+
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+
+		URL.revokeObjectURL(url);
+	}
+
+
+	// Load test data file
+	fetch('./js/Testing/warehouses2.json')
+		.then(res => res.json())
+		.then(warehouses => {
+			allResults = runWarehouseTests(warehouses);
+			// When ready to export:
+			exportResultsToCSV(allResults);
+		})
+		.catch(e => console.error('Sad. Warehouse data loading failed:', e));
+</script>
