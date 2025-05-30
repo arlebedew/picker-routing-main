@@ -1,4 +1,4 @@
-# Noliktavas Maršrutēšanas Lietotnes Koda Apraksts
+# Noliktavas maršrutēšanas lietotnes apraksts
 
 Šī repozitorija saturs ir saistīts ar akadēmisko darbu par pasūtījumu komplektētāja maršrutēšanas algoritmu analīzi un testēšanu.
 
