@@ -4,6 +4,7 @@
 Tas praktiskais mērķis ir A* darbības demonstrācija timekļa pārlūka.
 Risinājumā ir realizēti galvenie algoritma koncepti(Amit Patel, 2014b),
 ieskaitot tādus kā:
+
 -distances skaitļošana;
 -ceļa aprēķināšanas heiristika;
 -ceļa noteikšana starp diviem punktiem;
