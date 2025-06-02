@@ -1,7 +1,7 @@
 # Noliktavas maršrutēšanas lietotnes apraksts
 
-Šī repozitorija saturs ir saistīts ar akadēmisko darbu par pasūtījumu komplektētāja maršrutēšanas algoritmu analīzi un testēšanu.
-
+Šī repozitorija saturs ir saistīts ar akadēmisko darbu par pasūtījumu komplektētāja maršrutēšanas algoritmu analīzi un testēšanu.  
+Prototipa darbības demonstrācijas tīmekļa lapa atrodama **[ŠEIT](https://arlebedew.github.io/picker-routing-showcase/)**.
 ##  Struktūra un failu saturs
 
 - **index.html** – Galvenā lietotnes lietotāja saskarne. Satur vizualizācijas aspektus: CANVAS un vadības elementus.
